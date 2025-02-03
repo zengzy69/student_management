@@ -1,0 +1,177 @@
+basePath: /
+definitions:
+  model.Student:
+    properties:
+      class:
+        type: string
+      gender:
+        type: string
+      grades:
+        additionalProperties:
+          type: number
+        type: object
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 这是一个使用 Gin + Swagger 构建的学生管理系统 API。
+  title: 学生成绩管理系统 API
+  version: "1.0"
+paths:
+  /students:
+    post:
+      consumes:
+      - application/json
+      description: 添加新的学生信息
+      parameters:
+      - description: 学生信息
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 添加学生
+      tags:
+      - Student
+  /students/{id}:
+    delete:
+      description: 根据学号删除学生信息
+      parameters:
+      - description: 学生学号
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 删除学生信息
+      tags:
+      - Student
+    get:
+      description: 根据学号查询学生信息
+      parameters:
+      - description: 学生学号
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取学生信息
+      tags:
+      - Student
+    put:
+      consumes:
+      - application/json
+      description: 根据学号修改学生信息
+      parameters:
+      - description: 学生学号
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 学生信息
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 更新学生信息
+      tags:
+      - Student
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 通过 CSV 文件批量导入学生数据
+      parameters:
+      - description: CSV 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 上传 CSV 文件
+      tags:
+      - CSV
+swagger: "2.0"
